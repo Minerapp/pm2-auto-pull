@@ -14,10 +14,9 @@
   },
   "apps": [
     {
+      "name": "pm2-server-monitx",
       "script": "app.js",
-      "log_date_format": "YYYY-MM-DD HH:mm:ss Z",
-      "max_memory_restart": "100M",
-      "merge_logs": true
+      "max_memory_restart": "150M"
     }
   ],
   "author": "",
