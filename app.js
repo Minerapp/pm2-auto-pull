@@ -38,22 +38,6 @@ var conf = pmx.initModule({
     // Green / Yellow / Red
   }
 }, function() {
-
-  var cpu = require('./lib/cpu'),
-      os = require('./lib/os'),
-      drive = require('./lib/drive'),
-      users = require('./lib/users'),
-      shelljs = require('shelljs'),
-      fs      = require('fs'),
-      path    = require('path');
-
-  if (process.platform == 'linux')
-    var netstat = require('./lib/netstat'),
-        mem = require('./lib/mem'),
-        proc = require('./lib/proc');
-
-  require('./lib/actions.js');
-});
 var Probe = pmx.probe();
 
 var app_updated = Probe.counter({
@@ -108,4 +92,6 @@ pm2.connect(function() {
     });
   }, 30000 || conf.interval);
 
+});
+  
 });
