@@ -8,7 +8,6 @@ var pkg     = require('./package.json');
 var debug   = require('debug')(pkg.name);
 
 //var conf    = pmx.initModule();
-var pmx = require('pmx');
 
 var conf = pmx.initModule({
   widget : {
