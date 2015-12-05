@@ -22,7 +22,6 @@ function autoPull(cb) {
 
     async.forEachLimit(procs, 1, function(proc, next) {
       if (proc.pm2_env && proc.pm2_env.versioning) {
-        console.log(proc.pm2_env.pm_cwd);
         debug('pull And Reload %s', proc.name);
         var before = JSON.parse(fs.readFileSync(path.join(proc.pm2_env.pm_cwd, 'package.json'), 'utf8'));
         pm2.pullAndReload(proc.name, function(err, meta) {
@@ -32,7 +31,9 @@ function autoPull(cb) {
             app_updated.inc();
             var cmdList = depDiff().left(before).right(after).toCmdList();
             console.log('executing', cmdList)
-            
+            if (proc.pm2_env.exec_interpreter !== 'node') {
+              return;
+            }
             pm2.stop(proc.name, function (err, meta) {
               async.map(cmdList, installDependencies, function(err, res) {
                 console.log(err,res);
