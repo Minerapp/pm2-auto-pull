@@ -7,48 +7,14 @@ var async   = require('async');
 var pkg     = require('./package.json');
 var debug   = require('debug')(pkg.name);
 
-//var conf    = pmx.initModule();
-
-var conf = pmx.initModule({
-  widget : {
-    type             : 'generic',
-    logo             : 'https://www.glcomp.com/media/catalog/category/Dell-R620_3_1_1.png',
-
-    // 0 = main element
-    // 1 = secondary
-    // 2 = main border
-    // 3 = secondary border
-    theme            : ['#111111', '#1B2228', '#807C7C', '#807C7C'],
-
-    el : {
-      probes  : true,
-      actions : true
-    },
-
-    block : {
-      actions : false,
-      issues  : true,
-      meta : true,
-      cpu: false,
-      mem: false,
-      main_probes : ['CPU usage', 'Free memory', 'Avail. Disk', 'Total Processes', 'TTY/SSH opened', 'eth0 input', 'eth0 output', 'Operating System']
-    }
-
-    // Status
-    // Green / Yellow / Red
-  }
-}, function() {
-var Probe = pmx.probe();
-
-var app_updated = Probe.counter({
-  name : 'App updated'
-});
+var conf    = pmx.initModule();
 
 function autoPull(cb) {
   pm2.list(function(err, procs) {
 
     async.forEachLimit(procs, 1, function(proc, next) {
       if (proc.pm2_env && proc.pm2_env.versioning) {
+        console.log(proc);
         debug('pull And Reload %s', proc.name);
         pm2.pullAndReload(proc.name, function(err, meta) {
           if (meta) {
@@ -93,5 +59,4 @@ pm2.connect(function() {
   }, 30000 || conf.interval);
 
 });
-  
-});
+
