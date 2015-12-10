@@ -23,6 +23,8 @@ function autoPull(cb) {
     async.forEachLimit(procs, 1, function(proc, next) {
       if (proc.pm2_env && proc.pm2_env.versioning) {
         debug('pull And Reload %s', proc.name);
+	console.log('switching to', proc.pm2_env.pm_cwd)
+        process.chdir(proc.pm2_env.pm_cwd)
         var before = JSON.parse(fs.readFileSync(path.join(proc.pm2_env.pm_cwd, 'package.json'), 'utf8'));
         pm2.pullAndReload(proc.name, function(err, meta) {
           if (meta) {
